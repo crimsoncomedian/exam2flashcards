@@ -1,0 +1,348 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exam 2 Flashcards</title>
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #e3f2fd, #fce4ec);
+      --card-bg: #ffffff;
+      --card-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      --font-color: #333;
+      --accent-green: #4caf50;
+      --accent-red: #f44336;
+      --accent-yellow: #f7c948;
+      --transition-speed: 0.4s;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-gradient);
+      font-family: "Inter", Arial, sans-serif;
+      color: var(--font-color);
+      transition: background var(--transition-speed);
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+      color: #1a237e;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 25px;
+    }
+
+    /* === CARD === */
+    .card-container {
+      perspective: 1000px;
+    }
+
+    .card {
+      width: 400px;
+      height: 250px;
+      background: var(--card-bg);
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 1.3rem;
+      padding: 20px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform var(--transition-speed);
+      transform-style: preserve-3d;
+      position: relative;
+    }
+
+    .card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 20px;
+      padding: 20px;
+    }
+
+    .card-front {
+      background: var(--card-bg);
+    }
+
+    .card-back {
+      background: var(--card-bg);
+      transform: rotateY(180deg);
+      color: #1b5e20;
+      font-weight: bold;
+    }
+
+    /* === BUTTONS === */
+    .controls {
+      margin-top: 25px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .icon-btn {
+      width: 60px;
+      height: 60px;
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .icon-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-green {
+      background: var(--accent-green);
+    }
+    .btn-red {
+      background: var(--accent-red);
+    }
+    .btn-yellow {
+      background: var(--accent-yellow);
+    }
+
+    /* SVG ICONS */
+    .icon {
+      width: 28px;
+      height: 28px;
+      fill: white;
+      transition: transform 0.6s ease;
+    }
+
+    .btn-yellow:hover .icon {
+      transform: rotate(360deg);
+    }
+
+    /* === MESSAGE === */
+    .message {
+      margin-top: 25px;
+      font-size: 1rem;
+      color: #444;
+      min-height: 20px;
+      text-align: center;
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 480px) {
+      .card {
+        width: 300px;
+        height: 200px;
+        font-size: 1.1rem;
+      }
+      .icon-btn {
+        width: 50px;
+        height: 50px;
+      }
+      .icon {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🧮 Exam 2 Flashcards</h1>
+  <div class="subtitle">Tap the card to flip • Mark yourself • Reset anytime</div>
+
+  <div class="card-container">
+    <div class="card" id="flashcard">
+      <div class="card-face card-front" id="cardFront">Click to Flip</div>
+      <div class="card-face card-back" id="cardBack">Answer</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <!-- ✅ Button -->
+    <button class="icon-btn btn-green" onclick="markCorrect()" title="Mark Correct">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path d="M9 16.17l-3.88-3.88L3.7 13.7l5.3 5.3 12-12-1.42-1.42z"/>
+      </svg>
+    </button>
+
+    <!-- ❌ Button -->
+    <button class="icon-btn btn-red" onclick="nextCard()" title="Mark Incorrect">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path d="M18.3 5.71L12 12l6.3 6.29-1.41 1.42L10.59 13.4 4.3 19.71 2.89 18.3 9.17 12 2.89 5.71 4.3 4.3l6.29 6.29L16.59 4.3z"/>
+      </svg>
+    </button>
+
+    <!-- 🔁 Button replaced with simple white circle -->
+    <button class="icon-btn btn-yellow" onclick="resetProgress()" title="Reset Progress">
+      <svg class="icon" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" fill="white" />
+      </svg>
+    </button>
+  </div>
+
+  <div class="message" id="message"></div>
+
+  <script>
+    const flashcard = document.getElementById('flashcard');
+    const front = document.getElementById('cardFront');
+    const back = document.getElementById('cardBack');
+    const message = document.getElementById('message');
+
+    let currentCard = {};
+    const STORAGE_KEY = 'completedFlashcards';
+
+    const allCards = [
+      { id: 'addition', type: 'addition', side2: 'Sum' },
+      { id: 'subtraction', type: 'subtraction', side2: 'Difference' },
+      { id: 'multiplication', type: 'multiplication', side2: 'Product' },
+      { id: 'division_quotient', type: 'division_quotient', side2: 'Quotient' },
+      { id: 'division_dividend', type: 'division_dividend', side2: 'Dividend' },
+      { id: 'division_divisor', type: 'division_divisor', side2: 'Divisor' },
+      { id: 'prime', side1: 'A prime number is', side2: 'A number with exactly two factors' },
+      { id: 'composite', side1: 'A composite number is', side2: 'A number with three or more factors' },
+      { id: 'multiple', type: 'multiple', side2: 'Multiple' },
+      { id: 'factor', type: 'factor', side2: 'Factor' },
+      { id: 'lcm', side1: 'Least Common Multiple (LCM)', side2: 'The smallest multiple that two numbers have in common.' },
+      { id: 'gcf', side1: 'Greatest Common Factor (GCF)', side2: 'The largest factor that two numbers have in common.' }
+    ];
+
+    function randomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function getCompletedCards() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      return stored ? JSON.parse(stored) : [];
+    }
+
+    function saveCompletedCards(list) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    }
+
+    function getAvailableCards() {
+      const completed = getCompletedCards();
+      return allCards.filter(c => !completed.includes(c.id));
+    }
+
+    function generateCard() {
+      const available = getAvailableCards();
+
+      if (available.length === 0) {
+        front.textContent = "🎉 All flashcards are complete!";
+        back.textContent = "Click the yellow refresh button to try again.";
+        flashcard.classList.remove('flipped');
+        message.textContent = "";
+        currentCard = {};
+        return;
+      }
+
+      const card = available[randomInt(0, available.length - 1)];
+      currentCard = card;
+
+      let side1 = '';
+
+      switch (card.type) {
+        case 'addition': {
+          const a = randomInt(1, 20), b = randomInt(1, 20), c = a + b;
+          side1 = `In the problem ${a} + ${b} = ${c}, what is the number ${c} called?`;
+          break;
+        }
+        case 'subtraction': {
+          const a = randomInt(10, 30), b = randomInt(1, 9), c = a - b;
+          side1 = `In the problem ${a} - ${b} = ${c}, what is the number ${c} called?`;
+          break;
+        }
+        case 'multiplication': {
+          const a = randomInt(2, 10), b = randomInt(2, 10), c = a * b;
+          side1 = `In the problem ${a} × ${b} = ${c}, what is the number ${c} called?`;
+          break;
+        }
+        case 'division_quotient': {
+          const b = randomInt(2, 10), c = randomInt(2, 10), a = b * c;
+          side1 = `In the problem ${a} ÷ ${b} = ${c}, what is the number ${c} called?`;
+          break;
+        }
+        case 'division_dividend': {
+          const b = randomInt(2, 10), c = randomInt(2, 10), a = b * c;
+          side1 = `In the problem ${a} ÷ ${b} = ${c}, what is the number ${a} called?`;
+          break;
+        }
+        case 'division_divisor': {
+          const b = randomInt(2, 10), c = randomInt(2, 10), a = b * c;
+          side1 = `In the problem ${a} ÷ ${b} = ${c}, what is the number ${b} called?`;
+          break;
+        }
+        case 'multiple': {
+          const base = randomInt(2, 12);
+          const multiple = base * randomInt(2, 5);
+          side1 = `${multiple} is a _________ of ${base}.`;
+          break;
+        }
+        case 'factor': {
+          const base = randomInt(2, 12);
+          const multiple = base * randomInt(2, 5);
+          side1 = `${base} is a _________ of ${multiple}.`;
+          break;
+        }
+        default:
+          side1 = card.side1;
+      }
+
+      front.textContent = side1;
+      back.textContent = card.side2;
+      flashcard.classList.remove('flipped');
+      message.textContent = `${available.length} cards remaining.`;
+    }
+
+    flashcard.addEventListener('click', () => {
+      if (!currentCard.id) return;
+      flashcard.classList.toggle('flipped');
+    });
+
+    function markCorrect() {
+      if (!currentCard.id) return;
+      const completed = getCompletedCards();
+      if (!completed.includes(currentCard.id)) {
+        completed.push(currentCard.id);
+        saveCompletedCards(completed);
+      }
+      generateCard();
+    }
+
+    function nextCard() {
+      generateCard();
+    }
+
+    function resetProgress() {
+      localStorage.removeItem(STORAGE_KEY);
+      message.textContent = "Progress reset!";
+      generateCard();
+    }
+
+    generateCard();
+  </script>
+</body>
+</html>
