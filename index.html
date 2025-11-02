@@ -15,6 +15,7 @@
       --accent-yellow: #f7c948;
       --transition-speed: 0.4s;
     }
+
     body {
       margin: 0;
       height: 100vh;
@@ -26,43 +27,109 @@
       font-family: "Inter", Arial, sans-serif;
       color: var(--font-color);
     }
-    h1 { font-size: 2rem; margin-bottom: 10px; color: #1a237e; }
-    .subtitle { font-size: 1rem; color: #555; margin-bottom: 25px; }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: #1a237e;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 25px;
+    }
 
     .card-container { perspective: 1000px; }
-    .card {
-      width: 400px; height: 250px; background: var(--card-bg);
-      border-radius: 20px; box-shadow: var(--card-shadow);
-      display: flex; align-items: center; justify-content: center;
-      text-align: center; font-size: 1.3rem; padding: 20px;
-      cursor: pointer; user-select: none; transition: transform 0.4s;
-      transform-style: preserve-3d; position: relative;
-    }
-    .card.flipped { transform: rotateY(180deg); }
-    .card-face {
-      position: absolute; width: 100%; height: 100%;
-      backface-visibility: hidden; display: flex;
-      align-items: center; justify-content: center;
-      border-radius: 20px; padding: 20px;
-    }
-    .card-back { transform: rotateY(180deg); color: #1b5e20; font-weight: bold; }
 
-    .controls { margin-top: 25px; display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+    .card {
+      width: 400px;
+      height: 250px;
+      background: var(--card-bg);
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 1.3rem;
+      padding: 20px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.4s;
+      transform-style: preserve-3d;
+      position: relative;
+    }
+
+    .card.flipped { transform: rotateY(180deg); }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 20px;
+      padding: 20px;
+    }
+
+    .card-back {
+      transform: rotateY(180deg);
+      color: #1b5e20;
+      font-weight: bold;
+    }
+
+    .controls {
+      margin-top: 25px;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
     .icon-btn {
-      width: 60px; height: 60px; border: none; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+      width: 60px;
+      height: 60px;
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     }
-    .icon-btn:hover { transform: scale(1.1); box-shadow: 0 6px 12px rgba(0,0,0,0.2); }
+
+    .icon-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
     .btn-green { background: var(--accent-green); }
     .btn-red { background: var(--accent-red); }
     .btn-yellow { background: var(--accent-yellow); }
 
-    .icon { width: 28px; height: 28px; fill: white; transition: transform 0.6s ease; }
-    .btn-yellow:hover .icon { transform: rotate(360deg); }
+    .icon {
+      width: 28px;
+      height: 28px;
+      fill: white;
+      transition: transform 0.6s ease;
+    }
 
-    .message { margin-top: 25px; font-size: 1rem; color: #444; min-height: 20px; text-align: center; }
+    .btn-yellow:hover .icon {
+      transform: rotate(360deg);
+    }
+
+    .message {
+      margin-top: 25px;
+      font-size: 1rem;
+      color: #444;
+      min-height: 20px;
+      text-align: center;
+    }
+
     @media (max-width:480px){
       .card{width:300px;height:200px;font-size:1.1rem;}
       .icon-btn{width:50px;height:50px;}
@@ -72,118 +139,146 @@
 </head>
 <body>
 
-<h1>🧮 Math Flashcards</h1>
-<div class="subtitle">Tap to flip • Mark yourself • Reset anytime</div>
+  <h1>🧮 Math Flashcards</h1>
+  <div class="subtitle">Tap to flip • Mark yourself • Reset anytime</div>
 
-<div class="card-container">
-  <div class="card" id="flashcard">
-    <div class="card-face card-front" id="cardFront">Click to Flip</div>
-    <div class="card-face card-back" id="cardBack">Answer</div>
+  <div class="card-container">
+    <div class="card" id="flashcard">
+      <div class="card-face card-front" id="cardFront">Click to Flip</div>
+      <div class="card-face card-back" id="cardBack">Answer</div>
+    </div>
   </div>
-</div>
 
-<div class="controls">
-  <button class="icon-btn btn-green" onclick="markCorrect()" title="Mark Correct">
-    <svg class="icon" viewBox="0 0 24 24">
-      <path d="M9 16.17l-3.88-3.88L3.7 13.7l5.3 5.3 12-12-1.42-1.42z"/>
-    </svg>
-  </button>
-  <button class="icon-btn btn-red" onclick="nextCard()" title="Mark Incorrect">
-    <svg class="icon" viewBox="0 0 24 24">
-      <path d="M18.3 5.71L12 12l6.3 6.29-1.41 1.42L10.59 13.4 4.3 19.71 2.89 18.3 9.17 12 2.89 5.71 4.3 4.3l6.29 6.29L16.59 4.3z"/>
-    </svg>
-  </button>
-  <button class="icon-btn btn-yellow" onclick="resetProgress()" title="Reset Progress">
-    <svg class="icon" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="9" fill="white"/>
-    </svg>
-  </button>
-</div>
+  <div class="controls">
+    <button class="icon-btn btn-green" onclick="markCorrect()" title="Mark Correct">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path d="M9 16.17l-3.88-3.88L3.7 13.7l5.3 5.3 12-12-1.42-1.42z"/>
+      </svg>
+    </button>
 
-<div class="message" id="message"></div>
+    <button class="icon-btn btn-red" onclick="nextCard()" title="Mark Incorrect">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path d="M18.3 5.71L12 12l6.3 6.29-1.41 1.42L10.59 13.4 4.3 19.71 2.89 18.3 9.17 12 2.89 5.71 4.3 4.3l6.29 6.29L16.59 4.3z"/>
+      </svg>
+    </button>
 
-<script>
-const flashcard=document.getElementById('flashcard');
-const front=document.getElementById('cardFront');
-const back=document.getElementById('cardBack');
-const message=document.getElementById('message');
-const STORAGE_KEY='completedFlashcards';
-let currentCard={};
+    <button class="icon-btn btn-yellow" onclick="resetProgress()" title="Reset Progress">
+      <svg class="icon" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" fill="white" />
+      </svg>
+    </button>
+  </div>
 
-const allCards=[
-  {id:'addition',type:'addition',side2:'Sum'},
-  {id:'subtraction',type:'subtraction',side2:'Difference'},
-  {id:'multiplication',type:'multiplication',side2:'Product'},
-  {id:'division_quotient',type:'division_quotient',side2:'Quotient'},
-  {id:'division_dividend',type:'division_dividend',side2:'Dividend'},
-  {id:'division_divisor',type:'division_divisor',side2:'Divisor'},
-  {id:'prime',side1:'A prime number is',side2:'A number with exactly two factors'},
-  {id:'composite',side1:'A composite number is',side2:'A number with three or more factors'},
-  {id:'multiple',type:'multiple',side2:'Multiple'},
-  {id:'factor',type:'factor',side2:'Factor'},
-  {id:'lcm',side1:'Least Common Multiple (LCM)',side2:'The smallest multiple that two numbers have in common.'},
-  {id:'gcf',side1:'Greatest Common Factor (GCF)',side2:'The largest factor that two numbers have in common.'},
+  <div class="message" id="message"></div>
 
-  // ✨ NEW PROPERTY CARDS
-  {id:'commutative',type:'commutative',side2:'The Commutative Property'},
-  {id:'associative',type:'associative',side2:'The Associative Property'},
-  {id:'identity_add',type:'identity_add',side2:'The Identity Property of Addition'},
-  {id:'identity_mult',type:'identity_mult',side2:'The Identity Property of Multiplication'},
-  {id:'distributive',type:'distributive',side2:'The Distributive Property'}
-];
+  <script>
+    const flashcard = document.getElementById('flashcard');
+    const front = document.getElementById('cardFront');
+    const back = document.getElementById('cardBack');
+    const message = document.getElementById('message');
+    const STORAGE_KEY = 'completedFlashcards';
+    let currentCard = {};
 
-function randomInt(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
-function getCompletedCards(){return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}
-function saveCompletedCards(list){localStorage.setItem(STORAGE_KEY,JSON.stringify(list));}
-function getAvailableCards(){const done=getCompletedCards();return allCards.filter(c=>!done.includes(c.id));}
+    const allCards = [
+      // Existing cards...
+      { id: 'addition', type: 'addition', side2: 'Sum' },
+      { id: 'subtraction', type: 'subtraction', side2: 'Difference' },
+      { id: 'multiplication', type: 'multiplication', side2: 'Product' },
+      { id: 'division_quotient', type: 'division_quotient', side2: 'Quotient' },
+      { id: 'division_dividend', type: 'division_dividend', side2: 'Dividend' },
+      { id: 'division_divisor', type: 'division_divisor', side2: 'Divisor' },
+      { id: 'prime', side1: 'A prime number is', side2: 'A number with exactly two factors' },
+      { id: 'composite', side1: 'A composite number is', side2: 'A number with three or more factors' },
+      { id: 'multiple', type: 'multiple', side2: 'Multiple' },
+      { id: 'factor', type: 'factor', side2: 'Factor' },
+      { id: 'lcm', side1: 'Least Common Multiple (LCM)', side2: 'The smallest multiple that two numbers have in common.' },
+      { id: 'gcf', side1: 'Greatest Common Factor (GCF)', side2: 'The largest factor that two numbers have in common.' },
+      { id: 'commutative', type: 'commutative', side2: 'The Commutative Property' },
+      { id: 'associative', type: 'associative', side2: 'The Associative Property' },
+      { id: 'identity_add', type: 'identity_add', side2: 'The Identity Property of Addition' },
+      { id: 'identity_mult', type: 'identity_mult', side2: 'The Identity Property of Multiplication' },
+      { id: 'distributive', type: 'distributive', side2: 'The Distributive Property' },
 
-function generateCard(){
-  const available=getAvailableCards();
-  if(!available.length){
-    front.textContent="🎉 All flashcards are complete!";
-    back.textContent="Click the yellow refresh button to try again.";
-    flashcard.classList.remove('flipped');message.textContent='';currentCard={};return;
-  }
-  const card=available[randomInt(0,available.length-1)];currentCard=card;let side1='';
+      // ✨ NEW exponent & root cards
+      { id: 'square_root', type: 'square_root', side2: 'What number multiplied by itself is a?' },
+      { id: 'cube_root', type: 'cube_root', side2: 'What number multiplied by itself three times is a?' },
+      { id: 'zero_power', type: 'zero_power', side2: 'Anything to the zero power is 1.' },
+      { id: 'negative_exponent', type: 'negative_exponent', side2: 'To divide repeatedly.' }
+    ];
 
-  switch(card.type){
-    case 'addition':{const a=randomInt(1,20),b=randomInt(1,20),c=a+b;side1=`In the problem ${a}+${b}=${c}, what is the number ${c} called?`;break;}
-    case 'subtraction':{const a=randomInt(10,30),b=randomInt(1,9),c=a-b;side1=`In the problem ${a}-${b}=${c}, what is the number ${c} called?`;break;}
-    case 'multiplication':{const a=randomInt(2,10),b=randomInt(2,10),c=a*b;side1=`In the problem ${a}×${b}=${c}, what is the number ${c} called?`;break;}
-    case 'division_quotient':{const b=randomInt(2,10),c=randomInt(2,10),a=b*c;side1=`In the problem ${a}÷${b}=${c}, what is the number ${c} called?`;break;}
-    case 'division_dividend':{const b=randomInt(2,10),c=randomInt(2,10),a=b*c;side1=`In the problem ${a}÷${b}=${c}, what is the number ${a} called?`;break;}
-    case 'division_divisor':{const b=randomInt(2,10),c=randomInt(2,10),a=b*c;side1=`In the problem ${a}÷${b}=${c}, what is the number ${b} called?`;break;}
-    case 'multiple':{const base=randomInt(2,12),multiple=base*randomInt(2,5);side1=`${multiple} is a _________ of ${base}.`;break;}
-    case 'factor':{const base=randomInt(2,12),multiple=base*randomInt(2,5);side1=`${base} is a _________ of ${multiple}.`;break;}
-    case 'commutative':{
-      const a=randomInt(1,99),b=randomInt(1,99);
-      const ops=['+','×'];const op=ops[randomInt(0,1)];
-      side1=`${a} ${op} ${b} = ${b} ${op} ${a}\nYou can switch two numbers in an addition or multiplication problem and still get the same answer.`;break;}
-    case 'associative':{
-      const a=randomInt(1,99),b=randomInt(1,99),c=randomInt(1,99);
-      const ops=['+','×'];const op=ops[randomInt(0,1)];
-      side1=`(${a} ${op} ${b}) ${op} ${c} = ${a} ${op} (${b} ${op} ${c})\nYou can group numbers differently in an addition or multiplication problem and still get the same result.`;break;}
-    case 'identity_add':{
-      const a=randomInt(1,99);side1=`${a} + 0 = ${a}\nAnything plus zero is itself.`;break;}
-    case 'identity_mult':{
-      const a=randomInt(1,99);side1=`${a} × 1 = ${a}\nAnything multiplied by 1 is itself.`;break;}
-    case 'distributive':{
-      const a=randomInt(2,9),b=randomInt(2,9),c=randomInt(2,9);
-      side1=`${a}(${b} + ${c}) = ${a}×${b} + ${a}×${c}\nMultiplying a single number by a group of numbers added together is the same as multiplying the single number by each number individually, then adding the results.`;break;}
-    default:side1=card.side1;
-  }
+    function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+    function getCompletedCards() { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+    function saveCompletedCards(list) { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); }
+    function getAvailableCards() { const done = getCompletedCards(); return allCards.filter(c => !done.includes(c.id)); }
 
-  front.textContent=side1;back.textContent=card.side2;
-  flashcard.classList.remove('flipped');
-  message.textContent=`${available.length} cards remaining.`;
-}
+    function generateCard() {
+      const available = getAvailableCards();
+      if (!available.length) {
+        front.textContent = "🎉 All flashcards are complete!";
+        back.textContent = "Click the yellow refresh button to try again.";
+        flashcard.classList.remove('flipped');
+        message.textContent = '';
+        currentCard = {};
+        return;
+      }
 
-flashcard.addEventListener('click',()=>{if(!currentCard.id)return;flashcard.classList.toggle('flipped');});
-function markCorrect(){if(!currentCard.id)return;
-  const done=getCompletedCards();if(!done.includes(currentCard.id)){done.push(currentCard.id);saveCompletedCards(done);}generateCard();}
-function nextCard(){generateCard();}
-function resetProgress(){localStorage.removeItem(STORAGE_KEY);message.textContent='Progress reset!';generateCard();}
-generateCard();
-</script>
+      const card = available[randomInt(0, available.length - 1)];
+      currentCard = card;
+      let side1 = '';
+
+      switch (card.type) {
+        case 'addition': { const a=randomInt(1,20),b=randomInt(1,20),c=a+b; side1=`In the problem ${a}+${b}=${c}, what is the number ${c} called?`; break; }
+        case 'subtraction': { const a=randomInt(10,30),b=randomInt(1,9),c=a-b; side1=`In the problem ${a}-${b}=${c}, what is the number ${c} called?`; break; }
+        case 'multiplication': { const a=randomInt(2,10),b=randomInt(2,10),c=a*b; side1=`In the problem ${a}×${b}=${c}, what is the number ${c} called?`; break; }
+        case 'division_quotient': { const b=randomInt(2,10),c=randomInt(2,10),a=b*c; side1=`In the problem ${a}÷${b}=${c}, what is the number ${c} called?`; break; }
+        case 'division_dividend': { const b=randomInt(2,10),c=randomInt(2,10),a=b*c; side1=`In the problem ${a}÷${b}=${c}, what is the number ${a} called?`; break; }
+        case 'division_divisor': { const b=randomInt(2,10),c=randomInt(2,10),a=b*c; side1=`In the problem ${a}÷${b}=${c}, what is the number ${b} called?`; break; }
+        case 'multiple': { const base=randomInt(2,12),multiple=base*randomInt(2,5); side1=`${multiple} is a _________ of ${base}.`; break; }
+        case 'factor': { const base=randomInt(2,12),multiple=base*randomInt(2,5); side1=`${base} is a _________ of ${multiple}.`; break; }
+        case 'commutative': { const a=randomInt(1,99),b=randomInt(1,99); const ops=['+','×']; const op=ops[randomInt(0,1)]; side1=`${a} ${op} ${b} = ${b} ${op} ${a}\nYou can switch two numbers in an addition or multiplication problem and still get the same answer.`; break; }
+        case 'associative': { const a=randomInt(1,99),b=randomInt(1,99),c=randomInt(1,99); const ops=['+','×']; const op=ops[randomInt(0,1)]; side1=`(${a} ${op} ${b}) ${op} ${c} = ${a} ${op} (${b} ${op} ${c})\nYou can group numbers differently in an addition or multiplication problem and still get the same result.`; break; }
+        case 'identity_add': { const a=randomInt(1,99); side1=`${a} + 0 = ${a}\nAnything plus zero is itself.`; break; }
+        case 'identity_mult': { const a=randomInt(1,99); side1=`${a} × 1 = ${a}\nAnything multiplied by 1 is itself.`; break; }
+        case 'distributive': { const a=randomInt(2,9),b=randomInt(2,9),c=randomInt(2,9); side1=`${a}(${b} + ${c}) = ${a}×${b} + ${a}×${c}\nMultiplying a number by a group added together equals multiplying it by each number and adding results.`; break; }
+        case 'square_root': {
+          const perfectSquares=[4,9,16,25,36,49,64,81,100];
+          const a=perfectSquares[randomInt(0,perfectSquares.length-1)];
+          side1=`What does √${a} mean?`; break;
+        }
+        case 'cube_root': {
+          const perfectCubes=[8,27,64,125];
+          const a=perfectCubes[randomInt(0,perfectCubes.length-1)];
+          side1=`What does ∛${a} mean?`; break;
+        }
+        case 'zero_power': { const a=randomInt(2,10); side1=`What is ${a}⁰?`; break; }
+        case 'negative_exponent': { side1=`What does a negative exponent mean?`; break; }
+        default: side1 = card.side1;
+      }
+
+      front.textContent = side1;
+      back.textContent = card.side2;
+      flashcard.classList.remove('flipped');
+      message.textContent = `${available.length} cards remaining.`;
+    }
+
+    flashcard.addEventListener('click', () => { if (!currentCard.id) return; flashcard.classList.toggle('flipped'); });
+
+    function markCorrect() {
+      if (!currentCard.id) return;
+      const done = getCompletedCards();
+      if (!done.includes(currentCard.id)) { done.push(currentCard.id); saveCompletedCards(done); }
+      generateCard();
+    }
+
+    function nextCard() { generateCard(); }
+
+    function resetProgress() {
+      localStorage.removeItem(STORAGE_KEY);
+      message.textContent = "Progress reset!";
+      generateCard();
+    }
+
+    generateCard();
+  </script>
 </body>
 </html>
